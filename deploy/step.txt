@@ -1,0 +1,38 @@
+$git clone https://github.com/kedacore/keda.git
+$cd keda/deploy
+$kubectl create namespace keda
+$kubectl apply -n keda -f crds/keda.k8s.io_scaledobjects_crd.yaml
+$kubectl apply -n keda -f crds/keda.k8s.io_triggerauthentications_crd.yaml
+$kubectl apply -n keda -f .
+
+namespace/keda created
+serviceaccount/keda-operator created
+clusterrole.rbac.authorization.k8s.io/keda-operator created
+clusterrolebinding.rbac.authorization.k8s.io/keda-operator created
+deployment.apps/keda-operator created
+clusterrole.rbac.authorization.k8s.io/keda-external-metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/keda:system:auth-delegator created
+rolebinding.rbac.authorization.k8s.io/keda-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/keda-hpa-controller-external-metrics created
+deployment.apps/keda-metrics-apiserver created
+service/keda-metrics-apiserver created
+apiservice.apiregistration.k8s.io/v1beta1.external.metrics.k8s.io created
+
+$kubectl get pods -n keda
+
+NAME                                    READY   STATUS              RESTARTS   AGE
+keda-metrics-apiserver-bc489947-hbqzr   0/1     ContainerCreating   0          8s
+keda-operator-9f86847ff-cbx6c           1/1     Running             0          10s
+
+$kubectl apply -f .
+
+deployment.apps/go-demo-api created
+service/go-demo-api-service created
+scaledobject.keda.k8s.io/prometheus-scaledobject created
+clusterrole.rbac.authorization.k8s.io/prometheus created
+Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+serviceaccount/default configured
+clusterrolebinding.rbac.authorization.k8s.io/prometheus created
+configmap/prom-conf created
+deployment.extensions/prometheus-deployment created
+service/prometheus-service created
